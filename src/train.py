@@ -11,6 +11,7 @@ from sklearn.feature_selection import SelectKBest, f_regression
 import json
 import os
 
+
 def train_model_v2(model_type="ridge", threshold=None, random_state=42):
     # Load dataset
     Xy = load_diabetes(as_frame=True)
@@ -36,7 +37,8 @@ def train_model_v2(model_type="ridge", threshold=None, random_state=42):
     if model_type == "ridge":
         model = Ridge(alpha=1.0, random_state=random_state)
     elif model_type == "rf":
-        model = RandomForestRegressor(n_estimators=100, random_state=random_state)
+        model = RandomForestRegressor(n_estimators=100,
+                                      random_state=random_state)
     else:
         raise ValueError("model_type must be 'ridge' or 'rf'")
 
@@ -55,18 +57,21 @@ def train_model_v2(model_type="ridge", threshold=None, random_state=42):
         y_pred_flag = (preds >= threshold).astype(int)
         precision = precision_score(y_true_flag, y_pred_flag)
         recall = recall_score(y_true_flag, y_pred_flag)
-        metrics.update({"precision": precision, "recall": recall, "threshold": threshold})
+        metrics.update({"precision": precision,
+                        "recall": recall, "threshold": threshold})
 
     # Save artifacts
     os.makedirs("artifacts", exist_ok=True)
-    joblib.dump({"scaler": scaler, "selector": selector, "model": model}, "artifacts/model_v2.pkl")
+    joblib.dump({"scaler": scaler, "selector": selector,
+                 "model": model}, "artifacts/model_v2.pkl")
 
     with open("artifacts/metrics_v2.json", "w") as f:
         json.dump(metrics, f, indent=4)
 
     print(f"Model trained ({model_type}). RMSE={rmse:.2f}")
     if threshold:
-        print(f"High-risk flag -> Precision={precision:.2f}, Recall={recall:.2f}")
+        print(f"High-risk flag -> Precision={precision:.2f}, "
+              f"Recall={recall:.2f}")
 
 if __name__ == "__main__":
     # Example: Ridge regression with high-risk threshold = 200
