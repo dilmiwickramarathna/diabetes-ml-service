@@ -14,9 +14,11 @@ try:
 except Exception as e:
     raise RuntimeError(f"Model not found. Train the model first. {e}")
 
+
 @app.get("/health")
 def health():
     return {"status": "ok", "model_version": "v0.2"}
+
 
 @app.post("/predict")
 def predict(features: dict, high_risk_threshold: float = None):
