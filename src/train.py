@@ -73,6 +73,7 @@ def train_model_v2(model_type="ridge", threshold=None, random_state=42):
         print(f"High-risk flag -> Precision={precision:.2f}, "
               f"Recall={recall:.2f}")
 
+
 if __name__ == "__main__":
     # Example: Ridge regression with high-risk threshold = 200
     train_model_v2(model_type="ridge", threshold=200)
